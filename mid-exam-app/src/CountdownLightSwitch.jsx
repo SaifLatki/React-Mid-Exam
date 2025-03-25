@@ -1,17 +1,26 @@
+import { useState } from "react"
 
 function CountdownLigthSwitch(){
+    const[ligthMood,setLigthMood]=useState(true)
 
+    const ToggleThem = ()=>{
+        setLigthMood((lastMood)=> !lastMood )
+
+    }
+
+    
     return(
     <div className="container">
         <div className="header">
             <h1>Countdown & Light Switch</h1>
-            <div className="toggle-container">
+            <div className="toggle-container ">
                 <label className="toggle-switch">
-                <input type="checkbox" id="themeToggle" />
-                <span className="slider"></span>
+                <input type="checkbox" id="themeToggle" onClick={ToggleThem} checked={!ligthMood} />
+                <span className="slider" ></span>
                 </label>
                 <span>Light Mode</span>
             </div>
+            <span >{ligthMood ? "Light Mood":"Dark Mood"}</span>
         </div>
 
         <div className="timer-section">
