@@ -1,10 +1,10 @@
-
+import CountdownLigthSwitch from "./CountDownLightSwitch"
 
 function App() {
  
 
   return (
-    <h1>hello world</h1>
+    <CountdownLigthSwitch/>
   )
 }
 
