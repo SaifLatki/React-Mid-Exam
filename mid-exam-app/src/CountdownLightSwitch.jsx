@@ -1,41 +1,58 @@
-import { useState } from "react"
+import { useState, useEffect } from "react";
 
-function CountdownLigthSwitch(){
-    const[ligthMood,setLigthMood]=useState(true)
+function CountdownLightSwitch() {
+    const [lightMode, setLightMode] = useState(true);
+    const [count, setCount] = useState(30);
+    const [isActive, setIsActive] = useState(false);
 
-    const ToggleThem = ()=>{
-        setLigthMood((lastMood)=> !lastMood )
+    const toggleTheme = () => {
+        setLightMode((prevMode) => !prevMode);
+    };
 
-    }
+    useEffect(() => {
+        let timer;
+        if (isActive && count > 0) {
+            timer = setTimeout(() => setCount(count - 1), 1000);
+        } else if (count === 0) {
+            setIsActive(false);
+        }
+        return () => clearTimeout(timer);
+    }, [count, isActive]);
 
-    
-    return(
-    <div className="container">
-        <div className="header">
-            <h1>Countdown & Light Switch</h1>
-            <div className="toggle-container ">
-                <label className="toggle-switch">
-                <input type="checkbox" id="themeToggle" onClick={ToggleThem} checked={!ligthMood} />
-                <span className="slider" ></span>
-                </label>
-                <span>Light Mode</span>
+    const handleStartTimer = () => {
+        setIsActive(true);
+    };
+
+    const handleResetTimer = () => {
+        setIsActive(false);
+        setCount(30);
+    };
+
+    return (
+        <div className={`container ${lightMode ? "light" : "dark"}`}>
+            <div className="header">
+                <h1>Countdown & Light Switch</h1>
+                <div className="toggle-container">
+                    <label className="toggle-switch">
+                        <input type="checkbox" onChange={toggleTheme} checked={!lightMode} />
+                        <span className="slider"></span>
+                    </label>
+                    <span>{lightMode ? "Light Mode" : "Dark Mode"}</span>
+                </div>
             </div>
-            <span >{ligthMood ? "Light Mood":"Dark Mood"}</span>
-        </div>
 
-        <div className="timer-section">
-        <div className="progress-bar">
-            <div className="progress" id="progress"></div>
+            <div className="timer-section">
+                <div className="progress-bar">
+                    <div className="progress" style={{ width: `${(count / 30) * 100}%` }}></div>
+                </div>
+                <div className="timer">{count}s</div>
+                <div className="btn-group">
+                    <button onClick={handleStartTimer} disabled={isActive}>Start Timer</button>
+                    <button className="btn-reset" onClick={handleResetTimer}>Reset Timer</button>
+                </div>
+            </div>
         </div>
-        <div className="timer" id="timerDisplay">30s</div>
-        <div className="btn-group">
-            <button id="startButton">Start Timer</button>
-            <button className="btn-rest" id="resetButton" >Reset Timer</button>
-        </div>
-        <div className="message" id="messageArea"></div>
-        </div>
-   </div>      
-    )
+    );
 }
 
-export default CountdownLigthSwitch
+export default CountdownLightSwitch;
